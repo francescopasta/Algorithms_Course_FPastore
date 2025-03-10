@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using NUnit.Framework;
@@ -9,6 +10,10 @@ public class DungeonGeneratore : MonoBehaviour
     RectInt room;
     private List<RectInt> roomList = new();
 
+    public int limit;
+
+    //public bool theBastard;
+
     //public int wallWidthValue = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -16,78 +21,77 @@ public class DungeonGeneratore : MonoBehaviour
     {
         room = new RectInt(0,0,100,50);
         roomList.Add(room);
+        AlgorithmsUtils.DebugRectInt(roomList[0], Color.red, float.MaxValue);
+        //theBastard = true;
+        //StartCoroutine(StartLoop());
     }
 
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < roomList.Count; i++)
+        for (int i = 1; i < roomList.Count; i++)
         {
-            AlgorithmsUtils.DebugRectInt(roomList[i], Color.red);
+            if (i % 2 == 0) 
+            {
+                AlgorithmsUtils.DebugRectInt(roomList[i], Color.blue);
+            } else
+            {
+                AlgorithmsUtils.DebugRectInt(roomList[i], Color.red);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.Space)) 
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            CutRect(false);
+            CutRectH(room);
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
-            CutRect(true);
+            CutRectV(room);
         }
     }
 
-    void CutRect(bool splitHorizontally)
+    //IEnumerator StartLoop()
+    //{
+    //    for (int i = 0; i < limit; i++)
+    //    {
+    //        if (i % 2 == 0)
+    //        {
+    //            CutRectH(roomList[i]);
+    //        }
+    //        else
+    //        {
+    //            CutRectV(roomList[i]);
+    //        }
+    //        yield return new WaitForSeconds(2f);
+    //    }
+    //}
+
+    RectInt CutSpecificRectVertical(RectInt rect)
     {
-        RectInt rect = roomList[0];
-        RectInt newRect;
-
-        rect.width /= 2;
-        newRect = new RectInt(rect.width + 2, 0, rect.width - 2, rect.height);
-
-        roomList.Add(rect);
-        roomList.Add(newRect);
-
-        RectInt alab= roomList[roomList.Count-1];
-        RectInt ilib = roomList[roomList.Count];
-
-        //roomList.Insert(0, rect);
-
-
-
-        //if (!splitHorizontally)
-        //{
-
-        //}
-        //else
-        //{
-        //    rect.height /= 2;
-        //    newRect = new RectInt(0, rect.height + 2, rect.width, rect.height - 2);
-        //    roomList.Add(rect);
-        //    roomList.Add(newRect);
-        //}
-
-        //for (int i = 0; i < 10; i++)
-        //{
-        //    if (!splitHorizontally)
-        //    {
-        //        rect.width = (roomma.width / 2) /*- 1 * wallWidthValue*/;
-        //        newRect = new RectInt(50 + 2 * wallWidthValue, 0, rect.width - 2 * wallWidthValue, rect.height);
-        //        roomList.Add(rect);
-        //        roomList.Add(newRect);
-        //    }
-        //    else
-        //    {
-        //        rect.height = (roomma.height / 2) - 1 * wallWidthValue;
-        //        newRect = new RectInt(0, 25 + 2 * wallWidthValue, rect.width, rect.height - 2 * wallWidthValue);
-        //        roomList.Add(rect);
-        //        roomList.Add(newRect);
-        //    }
-
-        //    splitHorizontally = !splitHorizontally;
-
-        //    rect = roomList[i + 1];
-        //    newRect = roomList[i + 2];
-        //}
-
+        int newWidth = rect.width / 2;
+        RectInt newRect = new(0, 0, newWidth, rect.height);
+        return newRect;
     }
 
+    RectInt CutSpecificRectHorizontal(RectInt rect)
+    {
+        int newHeight= rect.height / 2;
+        RectInt newRect = new(0, 0, rect.width, newHeight);
+        return newRect;
+    }
+
+    void CutRectH(RectInt room)
+    {
+        RectInt oneRect = CutSpecificRectHorizontal(room);
+        RectInt twoRect = new(0, oneRect.height, oneRect.width, oneRect.height);
+        roomList.Add(oneRect);
+        roomList.Add(twoRect);
+    }
+    void CutRectV(RectInt room)
+    {
+        RectInt oneRect = CutSpecificRectVertical(room);
+        RectInt twoRect = new(oneRect.width, 0, oneRect.width, oneRect.height);
+        roomList.Add(oneRect);
+        roomList.Add(twoRect);
+    }
 }

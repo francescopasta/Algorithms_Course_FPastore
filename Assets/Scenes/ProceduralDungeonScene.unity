@@ -148,7 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b721ee39351f846828d7e9d585bc75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallWidthValue: 1
+  limit: 5
+  theBastard: 0
 --- !u!4 &81063397
 Transform:
   m_ObjectHideFlags: 0
