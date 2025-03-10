@@ -9,6 +9,7 @@ public class DungeonGeneratore : MonoBehaviour
 {
     RectInt room;
     private List<RectInt> roomList = new();
+    List<RectInt> listaNuova = new();
 
     public int limit;
 
@@ -22,6 +23,7 @@ public class DungeonGeneratore : MonoBehaviour
         room = new RectInt(0,0,100,50);
         roomList.Add(room);
         AlgorithmsUtils.DebugRectInt(roomList[0], Color.red, float.MaxValue);
+        //StartCoroutine(StartLoop(roomList));
         //theBastard = true;
         //StartCoroutine(StartLoop());
     }
@@ -29,42 +31,48 @@ public class DungeonGeneratore : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = 1; i < roomList.Count; i++)
+        if (Input.GetKeyUp(KeyCode.Space))
         {
-            if (i % 2 == 0) 
+            if (roomList.Count > 0) 
             {
-                AlgorithmsUtils.DebugRectInt(roomList[i], Color.blue);
-            } else
+                CutRectH(roomList[0]);
+            }
+            if (listaNuova.Count > 0) 
             {
-                AlgorithmsUtils.DebugRectInt(roomList[i], Color.red);
+                CutRectH(listaNuova[0]);
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        foreach (var item in roomList)
         {
-            CutRectH(room);
+            AlgorithmsUtils.DebugRectInt(item, Color.red);
         }
-        if (Input.GetKeyDown(KeyCode.P))
+
+        foreach (var item in listaNuova)
         {
-            CutRectV(room);
+            AlgorithmsUtils.DebugRectInt(item, Color.red);
         }
     }
 
-    //IEnumerator StartLoop()
-    //{
-    //    for (int i = 0; i < limit; i++)
-    //    {
-    //        if (i % 2 == 0)
-    //        {
-    //            CutRectH(roomList[i]);
-    //        }
-    //        else
-    //        {
-    //            CutRectV(roomList[i]);
-    //        }
-    //        yield return new WaitForSeconds(2f);
-    //    }
-    //}
+    IEnumerator StartLoop(List<RectInt> list)
+    {
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            foreach (var item in list)
+            {
+                AlgorithmsUtils.DebugRectInt(item, Color.green, float.MaxValue);
+            }
+            //if (i % 2 == 0)
+            //{
+            CutRectH(list[i]);
+            //}
+            //else
+            //{
+            //    CutRectH(roomList[i]);
+            //}
+            yield return new WaitForSeconds(2f);
+        }
+    }
 
     RectInt CutSpecificRectVertical(RectInt rect)
     {
@@ -84,14 +92,28 @@ public class DungeonGeneratore : MonoBehaviour
     {
         RectInt oneRect = CutSpecificRectHorizontal(room);
         RectInt twoRect = new(0, oneRect.height, oneRect.width, oneRect.height);
+        if (roomList.Count <= 0)
+        {
+            roomList.Clear();
+        } 
+        if(listaNuova.Count <= 0)
+        {
+            listaNuova.Clear();
+        }
+
         roomList.Add(oneRect);
-        roomList.Add(twoRect);
+        listaNuova.Add(twoRect);
     }
-    void CutRectV(RectInt room)
-    {
-        RectInt oneRect = CutSpecificRectVertical(room);
-        RectInt twoRect = new(oneRect.width, 0, oneRect.width, oneRect.height);
-        roomList.Add(oneRect);
-        roomList.Add(twoRect);
-    }
+    //void CutRectV(RectInt room)
+    //{
+    //    RectInt oneRect = CutSpecificRectVertical(room);
+    //    RectInt twoRect = new(oneRect.width, 0, oneRect.width, oneRect.height);
+    //    roomList.RemoveAt(0);
+    //    if (roomList.Count > 1)
+    //    {
+    //        roomList.RemoveAt(1);
+    //    }
+    //    roomList.Add(oneRect);
+    //    roomList.Add(twoRect);
+    //}
 }
