@@ -23,7 +23,7 @@ public class DungeonGeneratorNew : MonoBehaviour
         yield return new WaitForSeconds(1);
         rooms = new List<RectInt>(CutterHeight(roomFirst));
 
-        for (int i = 0; i < 11; i++)
+        for (int i = 0; i < 21; i++)
         {
             if (i % 2 == 0)
             {
@@ -56,10 +56,10 @@ public class DungeonGeneratorNew : MonoBehaviour
         int X = roomCut.xMin;
         int Y = roomCut.yMin;
         //Calculate the half to cut
-        int halfWidth = roomCut.width / 2;
+        float halfWidth = roomCut.width * Random.Range(0.1f, 1.0f);
         //Create Two identical Rects that represent the two divided parts of the original RECT
-        RectInt roomA = new RectInt(X, Y, halfWidth, roomCut.height);
-        RectInt roomB = new RectInt(X + roomA.width + 1, Y, halfWidth - 1, roomCut.height);
+        RectInt roomA = new RectInt(X, Y, roomCut.width - (int)halfWidth, roomCut.height);
+        RectInt roomB = new RectInt(X + roomA.width + 1, Y, (int)halfWidth - 1, roomCut.height);
         //Display the two new Rects
         AlgorithmsUtils.DebugRectInt(roomA, Color.green, float.MaxValue);
         AlgorithmsUtils.DebugRectInt(roomB, Color.green, float.MaxValue);
@@ -76,10 +76,10 @@ public class DungeonGeneratorNew : MonoBehaviour
         int X = roomCut.xMin;
         int Y = roomCut.yMin;
         //Calculate the half to cut
-        int halfHeight = roomCut.height / 2;
+        float halfHeight = roomCut.height * Random.Range(0.1f, 1.0f);
         //Create Two identical Rects that represent the two divided parts of the original RECT
-        RectInt roomA = new RectInt(X, Y, roomCut.width,  halfHeight);
-        RectInt roomB = new RectInt(X, Y + roomA.height + 1, roomCut.width, halfHeight - 1);
+        RectInt roomA = new RectInt(X, Y, roomCut.width,  roomCut.height - (int)halfHeight);
+        RectInt roomB = new RectInt(X, Y + roomA.height + 1, roomCut.width, (int)halfHeight - 1);
         //Display the two new Rects
         AlgorithmsUtils.DebugRectInt(roomA, Color.green, float.MaxValue);
         AlgorithmsUtils.DebugRectInt(roomB, Color.green, float.MaxValue);
