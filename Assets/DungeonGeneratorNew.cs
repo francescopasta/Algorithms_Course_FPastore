@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.VisualScripting;
@@ -14,22 +15,31 @@ public class DungeonGeneratorNew : MonoBehaviour
     void Start()
     {
         AlgorithmsUtils.DebugRectInt(roomFirst, Color.red, float.MaxValue);
+        StartCoroutine(AnimateCut());
+    }
+
+    IEnumerator AnimateCut()
+    {
+        yield return new WaitForSeconds(1);
         rooms = new List<RectInt>(CutterHeight(roomFirst));
 
         for (int i = 0; i < 11; i++)
         {
-            if(i % 2 == 0)
+            if (i % 2 == 0)
             {
                 if (roomsUsed.Contains(rooms[i])) continue;
+                yield return new WaitForSeconds(1);
                 List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
                 foreach (var room in list)
                 {
                     rooms.Add(room);
                 }
                 roomsUsed.Add(rooms[i]);
-            } else
+            }
+            else
             {
                 if (roomsUsed.Contains(rooms[i])) continue;
+                yield return new WaitForSeconds(1);
                 List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
                 foreach (var room in list)
                 {
@@ -38,13 +48,6 @@ public class DungeonGeneratorNew : MonoBehaviour
                 roomsUsed.Add(rooms[i]);
             }
         }
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     List<RectInt> CutterWidth(RectInt roomCut)
@@ -60,8 +63,6 @@ public class DungeonGeneratorNew : MonoBehaviour
         //Display the two new Rects
         AlgorithmsUtils.DebugRectInt(roomA, Color.green, float.MaxValue);
         AlgorithmsUtils.DebugRectInt(roomB, Color.green, float.MaxValue);
-        ////Clear old List
-        //rooms.Clear();
         //Add the two in a List in order to make them cuttable next
         List<RectInt> list = new();
         list.Add(roomA);
@@ -82,8 +83,6 @@ public class DungeonGeneratorNew : MonoBehaviour
         //Display the two new Rects
         AlgorithmsUtils.DebugRectInt(roomA, Color.green, float.MaxValue);
         AlgorithmsUtils.DebugRectInt(roomB, Color.green, float.MaxValue);
-        ////Clear old List
-        //rooms.Clear();
         //Add the two in a List in order to make them cuttable next
         List<RectInt> list = new ();
         list.Add(roomA);
