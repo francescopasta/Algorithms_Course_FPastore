@@ -23,9 +23,35 @@ public class DungeonGeneratorNew : MonoBehaviour
         yield return new WaitForSeconds(1);
         rooms = new List<RectInt>(CutterHeight(roomFirst));
 
+        //for (int i = 0; i < 21; i++)
+        //{
+        //    if (i % 2 == 0)
+        //    {
+        //        if (roomsUsed.Contains(rooms[i])) continue;
+        //        yield return new WaitForSeconds(1);
+        //        List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
+        //        foreach (var room in list)
+        //        {
+        //            rooms.Add(room);
+        //        }
+        //        roomsUsed.Add(rooms[i]);
+        //    }
+        //    else
+        //    {
+        //        if (roomsUsed.Contains(rooms[i])) continue;
+        //        yield return new WaitForSeconds(1);
+        //        List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
+        //        foreach (var room in list)
+        //        {
+        //            rooms.Add(room);
+        //        }
+        //        roomsUsed.Add(rooms[i]);
+        //    }
+        //}
+
         for (int i = 0; i < 21; i++)
         {
-            if (i % 2 == 0)
+            if (rooms[i].width > 10 && i % 2 == 0)
             {
                 if (roomsUsed.Contains(rooms[i])) continue;
                 yield return new WaitForSeconds(1);
@@ -35,8 +61,7 @@ public class DungeonGeneratorNew : MonoBehaviour
                     rooms.Add(room);
                 }
                 roomsUsed.Add(rooms[i]);
-            }
-            else
+            } else if (rooms[i].height > 10)
             {
                 if (roomsUsed.Contains(rooms[i])) continue;
                 yield return new WaitForSeconds(1);
@@ -46,6 +71,9 @@ public class DungeonGeneratorNew : MonoBehaviour
                     rooms.Add(room);
                 }
                 roomsUsed.Add(rooms[i]);
+            } else
+            {
+                rooms.Insert(i + 1, rooms[i]);
             }
         }
     }
