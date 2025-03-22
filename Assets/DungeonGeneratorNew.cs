@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class DungeonGeneratorNew : MonoBehaviour
     RectInt roomFirst = new RectInt(0,0,100,50);
     List<RectInt> rooms;
     List<RectInt> roomsUsed = new List<RectInt>();
+
+    public float animationTime;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,62 +24,91 @@ public class DungeonGeneratorNew : MonoBehaviour
 
     IEnumerator AnimateCut()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(animationTime);
         rooms = new List<RectInt>(CutterHeight(roomFirst));
 
-        //for (int i = 0; i < 21; i++)
+        for (int i = 0; i < rooms.Count; i++)
+        {
+            if (i % 2 == 0)
+            {
+                if (rooms[i].width > 10)
+                {
+                    yield return new WaitForSeconds(animationTime);
+                    List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
+                    foreach (var room in list)
+                    {
+                        rooms.Add(room);
+                    }
+                    roomsUsed.Add(rooms[i]);
+                }
+                else if (rooms[i].width < 10 && rooms[i].height > 10)
+                {
+                    yield return new WaitForSeconds(animationTime);
+                    List<RectInt> listB = new List<RectInt>(CutterHeight(rooms[i]));
+                    foreach (var room in listB)
+                    {
+                        rooms.Add(room);
+                    }
+                    roomsUsed.Add(rooms[i]);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                if (rooms[i].height > 10)
+                {
+                    yield return new WaitForSeconds(animationTime);
+                    List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
+                    foreach (var room in list)
+                    {
+                        rooms.Add(room);
+                    }
+                    roomsUsed.Add(rooms[i]);
+                }
+                else if (rooms[i].height < 10 && rooms[i].width > 10)
+                {
+                    yield return new WaitForSeconds(animationTime);
+                    List<RectInt> listB = new List<RectInt>(CutterWidth(rooms[i]));
+                    foreach (var room in listB)
+                    {
+                        rooms.Add(room);
+                    }
+                    roomsUsed.Add(rooms[i]);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+
+        //for (int i = 0; i < roomsUsed.Count; i++)
         //{
-        //    if (i % 2 == 0)
+        //    if (roomsUsed[i].width > 10)
         //    {
-        //        if (roomsUsed.Contains(rooms[i])) continue;
-        //        yield return new WaitForSeconds(1);
+        //        yield return new WaitForSeconds(animationTime);
         //        List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
         //        foreach (var room in list)
         //        {
-        //            rooms.Add(room);
+        //            roomsUsed.Add(room);
         //        }
-        //        roomsUsed.Add(rooms[i]);
         //    }
-        //    else
+        //    else if (roomsUsed[i].height > 10)
         //    {
-        //        if (roomsUsed.Contains(rooms[i])) continue;
-        //        yield return new WaitForSeconds(1);
+        //        yield return new WaitForSeconds(animationTime);
         //        List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
         //        foreach (var room in list)
         //        {
-        //            rooms.Add(room);
+        //            roomsUsed.Add(room);
         //        }
-        //        roomsUsed.Add(rooms[i]);
         //    }
+
+        //    continue;
         //}
 
-        for (int i = 0; i < 21; i++)
-        {
-            if (rooms[i].width > 10 && i % 2 == 0)
-            {
-                if (roomsUsed.Contains(rooms[i])) continue;
-                yield return new WaitForSeconds(1);
-                List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
-                foreach (var room in list)
-                {
-                    rooms.Add(room);
-                }
-                roomsUsed.Add(rooms[i]);
-            } else if (rooms[i].height > 10)
-            {
-                if (roomsUsed.Contains(rooms[i])) continue;
-                yield return new WaitForSeconds(1);
-                List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
-                foreach (var room in list)
-                {
-                    rooms.Add(room);
-                }
-                roomsUsed.Add(rooms[i]);
-            } else
-            {
-                rooms.Insert(i + 1, rooms[i]);
-            }
-        }
     }
 
     List<RectInt> CutterWidth(RectInt roomCut)
