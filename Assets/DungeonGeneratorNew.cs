@@ -93,217 +93,6 @@ public class DungeonGeneratorNew : MonoBehaviour
                 continue;
             }
         }
-
-        //if (rooms[i].width > 10)
-        //{
-        //    yield return new WaitForSeconds(animationTime);
-        //    List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
-        //    foreach (var room in list)
-        //    {
-        //        rooms.Add(room);
-        //    }
-        //    roomsUsed.Add(rooms[i]);
-        //}
-        //else if (rooms[i].width < 10 && rooms[i].height > 10)
-        //{
-        //    yield return new WaitForSeconds(animationTime);
-        //    List<RectInt> listB = new List<RectInt>(CutterHeight(rooms[i]));
-        //    foreach (var room in listB)
-        //    {
-        //        rooms.Add(room);
-        //    }
-        //    roomsUsed.Add(rooms[i]);
-        //}
-        //else
-        //{
-        //    continue;
-        //}
-        //if (rooms[i].height > 10)
-        //{
-        //    yield return new WaitForSeconds(animationTime);
-        //    List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
-        //    foreach (var room in list)
-        //    {
-        //        rooms.Add(room);
-        //    }
-        //    roomsUsed.Add(rooms[i]);
-        //}
-        //else if (rooms[i].height < 10 && rooms[i].width > 10)
-        //{
-        //    yield return new WaitForSeconds(animationTime);
-        //    List<RectInt> listB = new List<RectInt>(CutterWidth(rooms[i]));
-        //    foreach (var room in listB)
-        //    {
-        //        rooms.Add(room);
-        //    }
-        //    roomsUsed.Add(rooms[i]);
-        //}
-        //else
-        //{
-        //    continue;
-        //}
-
-        //for (int i = 0; i < rooms.Count; i++)
-        //{
-        //    if (i % 2 == 0)
-        //    {
-        //        if (rooms[i].width < 10 || rooms[i].height < 10) continue;
-        //        yield return new WaitForSeconds(animationTime);
-        //        List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
-        //        foreach (var room in list)
-        //        {
-        //            rooms.Add(room);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (rooms[i].width < 10 || rooms[i].height < 10) continue;
-        //        yield return new WaitForSeconds(animationTime);
-        //        List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
-        //        foreach (var room in list)
-        //        {
-        //            rooms.Add(room);
-        //        }
-        //    }
-
-        //}
-
-        //for (int i = 0; i < rooms.Count; i++)
-        //{
-        //    if (i % 2 == 0)
-        //    {
-        //        //if (rooms[i].width < 10 || rooms[i].height < 10) continue;
-        //        if (rooms[i].width > rooms[i].height)
-        //        {
-        //            yield return new WaitForSeconds(animationTime);
-        //            List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
-        //            foreach (var room in list)
-        //            {
-        //                rooms.Add(room);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            yield return new WaitForSeconds(animationTime);
-        //            List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
-        //            foreach (var room in list)
-        //            {
-        //                rooms.Add(room);
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        //if (rooms[i].width < 10 || rooms[i].height < 10) continue;
-        //        if (rooms[i].width < rooms[i].height)
-        //        {
-        //            yield return new WaitForSeconds(animationTime);
-        //            List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
-        //            foreach (var room in list)
-        //            {
-        //                rooms.Add(room);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            yield return new WaitForSeconds(animationTime);
-        //            List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
-        //            foreach (var room in list)
-        //            {
-        //                rooms.Add(room);
-        //            }
-        //        }
-        //    }
-
-        //}
-
-        //int index = 0;
-
-        //for (int i = 0; i < rooms.Count; i++)
-        //{
-        //    index++;
-        //    if (index % 2 == 0)
-        //    {
-        //        if (rooms[i].width > 10)
-        //        {
-        //            yield return new WaitForSeconds(animationTime);
-        //            List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
-        //            foreach (var room in list)
-        //            {
-        //                rooms.Add(room);
-        //            }
-        //            roomsUsed.Add(rooms[i]);
-        //        }
-        //        else if (rooms[i].width < 10 && rooms[i].height > 10)
-        //        {
-        //            yield return new WaitForSeconds(animationTime);
-        //            List<RectInt> listB = new List<RectInt>(CutterHeight(rooms[i]));
-        //            foreach (var room in listB)
-        //            {
-        //                rooms.Add(room);
-        //            }
-        //            roomsUsed.Add(rooms[i]);
-        //            index++;
-        //        }
-        //        else
-        //        {
-        //            continue;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (rooms[i].height > 10)
-        //        {
-        //            yield return new WaitForSeconds(animationTime);
-        //            List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
-        //            foreach (var room in list)
-        //            {
-        //                rooms.Add(room);
-        //            }
-        //            roomsUsed.Add(rooms[i]);
-        //        }
-        //        else if (rooms[i].height < 10 && rooms[i].width > 10)
-        //        {
-        //            yield return new WaitForSeconds(animationTime);
-        //            List<RectInt> listB = new List<RectInt>(CutterWidth(rooms[i]));
-        //            foreach (var room in listB)
-        //            {
-        //                rooms.Add(room);
-        //            }
-        //            roomsUsed.Add(rooms[i]);
-        //            index++;
-        //        }
-        //        else
-        //        {
-        //            continue;
-        //        }
-        //    }
-        //}
-
-        //for (int i = 0; i < roomsUsed.Count; i++)
-        //{
-        //    if (roomsUsed[i].width > 10)
-        //    {
-        //        yield return new WaitForSeconds(animationTime);
-        //        List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
-        //        foreach (var room in list)
-        //        {
-        //            roomsUsed.Add(room);
-        //        }
-        //    }
-        //    else if (roomsUsed[i].height > 10)
-        //    {
-        //        yield return new WaitForSeconds(animationTime);
-        //        List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
-        //        foreach (var room in list)
-        //        {
-        //            roomsUsed.Add(room);
-        //        }
-        //    }
-
-        //    continue;
-        //}
-
     }
 
     List<RectInt> CutterWidth(RectInt roomCut)
@@ -312,6 +101,14 @@ public class DungeonGeneratorNew : MonoBehaviour
         int X = roomCut.xMin;
         int Y = roomCut.yMin;
         //Calculate the half to cut
+        //float normalized = (roomCut.width) - 10f / 100f - 10f;
+        //float approx = (0.3f * (1f - normalized));
+        //float minRange = Mathf.Max(0f, 0.5f - approx);
+        //float maxRange = Mathf.Min(1f, 0.5f + approx);
+
+        //float normalized = roomCut.width / 100;
+
+
         float halfWidth = roomCut.width * Random.Range(0.2f, 0.9f);
         //Create Two identical Rects that represent the two divided parts of the original RECT
         RectInt roomA = new RectInt(X, Y, roomCut.width - (int)halfWidth, roomCut.height);
@@ -332,6 +129,10 @@ public class DungeonGeneratorNew : MonoBehaviour
         int X = roomCut.xMin;
         int Y = roomCut.yMin;
         //Calculate the half to cut
+        //float normalized = (roomCut.width) - 10f / 100f - 10f;
+        //float approx = (0.3f * (1f - normalized));
+        //float minRange = Mathf.Max(0f, 0.5f - approx);
+        //float maxRange = Mathf.Min(1f, 0.5f + approx);
         float halfHeight = roomCut.height * Random.Range(0.2f, 0.9f);
         //Create Two identical Rects that represent the two divided parts of the original RECT
         RectInt roomA = new RectInt(X, Y, roomCut.width,  roomCut.height - (int)halfHeight);
