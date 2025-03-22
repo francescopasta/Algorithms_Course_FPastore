@@ -27,6 +27,8 @@ public class DungeonGeneratorNew : MonoBehaviour
         yield return new WaitForSeconds(animationTime);
         rooms = new List<RectInt>(CutterHeight(roomFirst));
 
+        int exodus = 0;
+
         for (int i = 0; i < rooms.Count; i++)
         {
             if (rooms[i].width < 10 && rooms[i].height < 10) continue;
@@ -69,28 +71,24 @@ public class DungeonGeneratorNew : MonoBehaviour
                 }
             } else
             {
-                //int randomBro = Random.Range(1, 3);
-                //if(randomBro == 1)
-                //{
-                //    yield return new WaitForSeconds(animationTime);
-                //    List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
-                //    foreach (var room in list)
-                //    {
-                //        rooms.Add(room);
-                //    }
-                //    continue;
-                //}
-                //if (randomBro == 2) 
-                //{
-                //    yield return new WaitForSeconds(animationTime);
-                //    List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
-                //    foreach (var room in list)
-                //    {
-                //        rooms.Add(room);
-                //    }
-                //    continue;
-                //}
-                continue;
+                if (exodus % 2 == 0)
+                {
+                    yield return new WaitForSeconds(animationTime);
+                    List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
+                    foreach (var room in list)
+                    {
+                        rooms.Add(room);
+                    }
+                } else
+                {
+                    yield return new WaitForSeconds(animationTime);
+                    List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
+                    foreach (var room in list)
+                    {
+                        rooms.Add(room);
+                    }
+                }
+                exodus++;
             }
         }
     }
