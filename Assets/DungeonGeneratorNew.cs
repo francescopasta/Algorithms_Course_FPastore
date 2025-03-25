@@ -12,8 +12,10 @@ public class DungeonGeneratorNew : MonoBehaviour
     RectInt roomFirst = new RectInt(0,0,100,50);
     List<RectInt> rooms;
     List<RectInt> roomsUsed = new List<RectInt>();
+    List<RectInt> theDoors = new List<RectInt>();
 
     public float animationTime;
+    public int limit = 10;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,11 +33,11 @@ public class DungeonGeneratorNew : MonoBehaviour
 
         for (int i = 0; i < rooms.Count; i++)
         {
-            if (rooms[i].width < 10 && rooms[i].height < 10) continue;
+            if (rooms[i].width < limit && rooms[i].height < limit) continue;
 
             if (rooms[i].width > rooms[i].height)
             {
-                if (rooms[i].width < 10)
+                if (rooms[i].width < limit)
                 {
                     yield return new WaitForSeconds(animationTime);
                     List<RectInt> listB = new List<RectInt>(CutterHeight(rooms[i]));
@@ -53,7 +55,7 @@ public class DungeonGeneratorNew : MonoBehaviour
                 }
             } else if(rooms[i].width < rooms[i].height)
             {
-                if (rooms[i].height < 10)
+                if (rooms[i].height < limit)
                 {
                     yield return new WaitForSeconds(animationTime);
                     List<RectInt> listB = new List<RectInt>(CutterWidth(rooms[i]));
@@ -73,6 +75,16 @@ public class DungeonGeneratorNew : MonoBehaviour
             {
                 if (exodus % 2 == 0)
                 {
+                    if (rooms[i].width < limit)
+                    {
+                        yield return new WaitForSeconds(animationTime);
+                        List<RectInt> listB = new List<RectInt>(CutterHeight(rooms[i]));
+                        foreach (var room in listB)
+                        {
+                            rooms.Add(room);
+                        }
+                        continue;
+                    }
                     yield return new WaitForSeconds(animationTime);
                     List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
                     foreach (var room in list)
@@ -81,6 +93,16 @@ public class DungeonGeneratorNew : MonoBehaviour
                     }
                 } else
                 {
+                    if (rooms[i].height < limit)
+                    {
+                        yield return new WaitForSeconds(animationTime);
+                        List<RectInt> listB = new List<RectInt>(CutterWidth(rooms[i]));
+                        foreach (var room in listB)
+                        {
+                            rooms.Add(room);
+                        }
+                        continue;
+                    }
                     yield return new WaitForSeconds(animationTime);
                     List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
                     foreach (var room in list)
@@ -114,6 +136,21 @@ public class DungeonGeneratorNew : MonoBehaviour
         //Display the two new Rects
         AlgorithmsUtils.DebugRectInt(roomA, Color.green, float.MaxValue);
         AlgorithmsUtils.DebugRectInt(roomB, Color.green, float.MaxValue);
+
+        //ADD RANDOM DOOR
+        //Random.Range(Y, roomCut.height)
+
+        int height = roomA.height;
+
+        Debug.Log(height);
+
+        RectInt door = new RectInt(X + roomA.width, Random.Range(Y, Y + roomCut.height), 1, 1);
+        AlgorithmsUtils.DebugRectInt(door, Color.green, float.MaxValue);
+
+        //INSERT DOOR IN A LIST
+
+        theDoors.Add(door);
+
         //Add the two in a List in order to make them cuttable next
         List<RectInt> list = new();
         list.Add(roomA);
@@ -138,6 +175,16 @@ public class DungeonGeneratorNew : MonoBehaviour
         //Display the two new Rects
         AlgorithmsUtils.DebugRectInt(roomA, Color.green, float.MaxValue);
         AlgorithmsUtils.DebugRectInt(roomB, Color.green, float.MaxValue);
+
+        //ADD RANDOM DOOR
+
+        RectInt door = new RectInt(Random.Range(X, X + roomA.width), Y + roomA.height, 1, 1);
+        AlgorithmsUtils.DebugRectInt(door, Color.green, float.MaxValue);
+
+        ////INSERT DOOR IN A LIST
+
+        theDoors.Add(door);
+
         //Add the two in a List in order to make them cuttable next
         List<RectInt> list = new ();
         list.Add(roomA);
