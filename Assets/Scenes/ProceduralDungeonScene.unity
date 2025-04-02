@@ -606,7 +606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationTimeRooms: 0.1
-  animationTimeDoors: 0.1
+  animationTimeDoors: 1.6
   limit: 6
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

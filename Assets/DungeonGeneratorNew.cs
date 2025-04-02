@@ -13,6 +13,7 @@ public class DungeonGeneratorNew : MonoBehaviour
     List<RectInt> rooms;
     List<RectInt> roomsUsed = new List<RectInt>();
     //List<RectInt> theDoors = new List<RectInt>();
+    List<RectInt> walls = new List<RectInt>();
 
     public float animationTimeRooms;
     public float animationTimeDoors;
@@ -68,30 +69,35 @@ public class DungeonGeneratorNew : MonoBehaviour
 
     IEnumerator AddDoors()
     {
-        //RectInt intersector = AlgorithmsUtils.Intersect(roomsUsed[0], roomsUsed[1]);
-        //AlgorithmsUtils.DebugRectInt(intersector, Color.red, float.MaxValue);
+        foreach (var wall in walls)
+        {
+            AlgorithmsUtils.DebugRectInt(wall, Color.red, float.MaxValue);
+            if(wall.width < wall.height)
+            {
+                yield return new WaitForSeconds(animationTimeDoors);
+                RectInt door = new (wall.x, Random.Range(wall.y + 1, wall.height), 1, 1);
+                AlgorithmsUtils.DebugRectInt(door, Color.yellow, float.MaxValue);
+            } else
+            {
+                yield return new WaitForSeconds(animationTimeDoors);
+                RectInt door = new (Random.Range(wall.x + 1, wall.width), wall.y, 1, 1);
+                AlgorithmsUtils.DebugRectInt(door, Color.yellow, float.MaxValue);
+            }
+        }
+    }
 
+    IEnumerator AddWalls()
+    {
         foreach (var room in roomsUsed)
         {
-            for (global::System.Int32 i = 0; i < roomsUsed.Count; i++)
-            {
-                //if(AlgorithmsUtils.Intersects(room, roomsUsed[i]))
-                //{
-                    RectInt intersector = AlgorithmsUtils.Intersect(room, roomsUsed[i]);
-                    AlgorithmsUtils.DebugRectInt(intersector, Color.red, float.MaxValue);
-                    //AlgorithmsUtils.FillRectangleOutline(["A", "B"], intersector, "A");
-                    yield return new WaitForSeconds(animationTimeDoors);
-                //}
-
-                //if (AlgorithmsUtils.Intersects(room, roomsUsed[i]))
-                //{
-                //    RectInt door = new RectInt(X + roomA.width, Random.Range(Y, Y + roomCut.height), 1, 1);
-                //    StartCoroutine(ShowRect(door));
-                //    AlgorithmsUtils.DebugRectInt(door, Color.yellow, float.MaxValue);
-                //}
-            } 
+            yield return new WaitForSeconds(animationTimeDoors);
+            RectInt wallWidth = new RectInt(room.x + room.width, room.y, 1, room.height);
+            RectInt wallHeight = new RectInt(room.x, room.y + room.height, room.width, 1);
+            AlgorithmsUtils.DebugRectInt(wallWidth, Color.red, float.MaxValue);
+            AlgorithmsUtils.DebugRectInt(wallHeight, Color.red, float.MaxValue);
+            walls.Add(wallWidth);
+            walls.Add(wallHeight);
         }
-
     }
 
     IEnumerator ShowRect(RectInt rect)
@@ -113,6 +119,12 @@ public class DungeonGeneratorNew : MonoBehaviour
         //Display the two new Rects
         AlgorithmsUtils.DebugRectInt(roomA, Color.black, float.MaxValue);
         AlgorithmsUtils.DebugRectInt(roomB, Color.black, float.MaxValue);
+
+        //ADD WALLS TO A LIST
+
+        RectInt wallWidth = new RectInt(X + roomA.width, Y, 1, roomA.height);
+        AlgorithmsUtils.DebugRectInt(wallWidth, Color.black, float.MaxValue);
+        walls.Add(wallWidth);
 
         ////ADD RANDOM DOOR
 
@@ -144,6 +156,12 @@ public class DungeonGeneratorNew : MonoBehaviour
         //Display the two new Rects
         AlgorithmsUtils.DebugRectInt(roomA, Color.black, float.MaxValue);
         AlgorithmsUtils.DebugRectInt(roomB, Color.black, float.MaxValue);
+
+        //ADD WALLS TO A LIST
+
+        RectInt wallHeight = new RectInt(X, Y + roomA.height, roomA.width, 1);
+        AlgorithmsUtils.DebugRectInt(wallHeight, Color.black, float.MaxValue);
+        walls.Add(wallHeight);
 
         ////ADD RANDOM DOOR
 
