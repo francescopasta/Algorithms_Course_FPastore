@@ -9,11 +9,11 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 public class DungeonGeneratorNew : MonoBehaviour
 {
-    RectInt roomFirst = new RectInt(0,0,100,50);
-    List<RectInt> rooms;
-    List<RectInt> roomsUsed = new List<RectInt>();
+    private RectInt roomFirst = new RectInt(0,0,100,50);
+    private List<RectInt> rooms;
+    private List<RectInt> roomsUsed = new List<RectInt>();
     //List<RectInt> theDoors = new List<RectInt>();
-    List<RectInt> walls = new List<RectInt>();
+    private List<RectInt> walls = new List<RectInt>();
 
     public float animationTimeRooms;
     public float animationTimeDoors;
@@ -49,7 +49,7 @@ public class DungeonGeneratorNew : MonoBehaviour
                 {
                     rooms.Add(room);
                 }
-                roomsUsed.Add(rooms[i]);
+                //roomsUsed.Add(rooms[i]);
             }
             else
             {
@@ -60,7 +60,29 @@ public class DungeonGeneratorNew : MonoBehaviour
                 {
                     rooms.Add(room);
                 }
-                roomsUsed.Add(rooms[i]);
+                //roomsUsed.Add(rooms[i]);
+            }
+        }
+
+        //StartCoroutine(AddDoors());
+        AddWalls();
+    }
+
+    void AddWalls()
+    {
+        for (int i = 0; i < rooms.Count; i++)
+        {
+            for (int j = i + 1; j < rooms.Count; j++)
+            {
+                if (AlgorithmsUtils.Intersects(rooms[i], rooms[j]))    
+                {
+                    RectInt wall = AlgorithmsUtils.Intersect(rooms[i], rooms[j]);
+                    if (wall.width == 1 || wall.height == 1)
+                    {
+                        //AlgorithmsUtils.DebugRectInt(wall, Color.red, float.MaxValue);
+                        walls.Add(wall);
+                    }
+                }
             }
         }
 
@@ -71,34 +93,33 @@ public class DungeonGeneratorNew : MonoBehaviour
     {
         foreach (var wall in walls)
         {
-            AlgorithmsUtils.DebugRectInt(wall, Color.red, float.MaxValue);
             if(wall.width < wall.height)
             {
                 yield return new WaitForSeconds(animationTimeDoors);
-                RectInt door = new (wall.x, Random.Range(wall.y + 1, wall.height), 1, 1);
-                AlgorithmsUtils.DebugRectInt(door, Color.yellow, float.MaxValue);
+                RectInt door = new RectInt(wall.x, Random.Range(wall.y, wall.y + wall.height), 1, 1);
+                AlgorithmsUtils.DebugRectInt(door, Color.red, float.MaxValue);
             } else
             {
                 yield return new WaitForSeconds(animationTimeDoors);
-                RectInt door = new (Random.Range(wall.x + 1, wall.width), wall.y, 1, 1);
-                AlgorithmsUtils.DebugRectInt(door, Color.yellow, float.MaxValue);
+                RectInt door = new RectInt(Random.Range(wall.x, wall.x + wall.width), wall.y, 1, 1);
+                AlgorithmsUtils.DebugRectInt(door, Color.red, float.MaxValue);
             }
         }
     }
 
-    IEnumerator AddWalls()
-    {
-        foreach (var room in roomsUsed)
-        {
-            yield return new WaitForSeconds(animationTimeDoors);
-            RectInt wallWidth = new RectInt(room.x + room.width, room.y, 1, room.height);
-            RectInt wallHeight = new RectInt(room.x, room.y + room.height, room.width, 1);
-            AlgorithmsUtils.DebugRectInt(wallWidth, Color.red, float.MaxValue);
-            AlgorithmsUtils.DebugRectInt(wallHeight, Color.red, float.MaxValue);
-            walls.Add(wallWidth);
-            walls.Add(wallHeight);
-        }
-    }
+    //IEnumerator AddWalls()
+    //{
+    //    foreach (var room in roomsUsed)
+    //    {
+    //        yield return new WaitForSeconds(animationTimeDoors);
+    //        RectInt wallWidth = new RectInt(room.x + room.width, room.y, 1, room.height);
+    //        RectInt wallHeight = new RectInt(room.x, room.y + room.height, room.width, 1);
+    //        AlgorithmsUtils.DebugRectInt(wallWidth, Color.red, float.MaxValue);
+    //        AlgorithmsUtils.DebugRectInt(wallHeight, Color.red, float.MaxValue);
+    //        walls.Add(wallWidth);
+    //        walls.Add(wallHeight);
+    //    }
+    //}
 
     IEnumerator ShowRect(RectInt rect)
     {
@@ -115,16 +136,16 @@ public class DungeonGeneratorNew : MonoBehaviour
         float halfWidth = roomCut.width * Random.Range(0.3f, 0.8f);
         //Create Two identical Rects that represent the two divided parts of the original RECT
         RectInt roomA = new RectInt(X, Y, roomCut.width - (int)halfWidth, roomCut.height);
-        RectInt roomB = new RectInt(X + roomA.width + 1, Y, (int)halfWidth - 1, roomCut.height);
+        RectInt roomB = new RectInt(X + roomA.width - 1, Y, (int)halfWidth + 1, roomCut.height);
         //Display the two new Rects
         AlgorithmsUtils.DebugRectInt(roomA, Color.black, float.MaxValue);
         AlgorithmsUtils.DebugRectInt(roomB, Color.black, float.MaxValue);
 
         //ADD WALLS TO A LIST
 
-        RectInt wallWidth = new RectInt(X + roomA.width, Y, 1, roomA.height);
-        AlgorithmsUtils.DebugRectInt(wallWidth, Color.black, float.MaxValue);
-        walls.Add(wallWidth);
+        //RectInt wallWidth = new RectInt(X + roomA.width, Y, 1, roomA.height);
+        //AlgorithmsUtils.DebugRectInt(wallWidth, Color.black, float.MaxValue);
+        //walls.Add(wallWidth);
 
         ////ADD RANDOM DOOR
 
@@ -152,16 +173,16 @@ public class DungeonGeneratorNew : MonoBehaviour
         float halfHeight = roomCut.height * Random.Range(0.3f, 0.8f);
         //Create Two identical Rects that represent the two divided parts of the original RECT
         RectInt roomA = new RectInt(X, Y, roomCut.width,  roomCut.height - (int)halfHeight);
-        RectInt roomB = new RectInt(X, Y + roomA.height + 1, roomCut.width, (int)halfHeight - 1);
+        RectInt roomB = new RectInt(X, Y + roomA.height - 1, roomCut.width, (int)halfHeight + 1);
         //Display the two new Rects
         AlgorithmsUtils.DebugRectInt(roomA, Color.black, float.MaxValue);
         AlgorithmsUtils.DebugRectInt(roomB, Color.black, float.MaxValue);
 
         //ADD WALLS TO A LIST
 
-        RectInt wallHeight = new RectInt(X, Y + roomA.height, roomA.width, 1);
-        AlgorithmsUtils.DebugRectInt(wallHeight, Color.black, float.MaxValue);
-        walls.Add(wallHeight);
+        //RectInt wallHeight = new RectInt(X, Y + roomA.height, roomA.width, 1);
+        //AlgorithmsUtils.DebugRectInt(wallHeight, Color.black, float.MaxValue);
+        //walls.Add(wallHeight);
 
         ////ADD RANDOM DOOR
 

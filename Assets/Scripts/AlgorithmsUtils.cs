@@ -18,6 +18,7 @@ public class AlgorithmsUtils
         int width = Mathf.Min(a.xMax, b.xMax) - x;
         int height = Mathf.Min(a.yMax, b.yMax) - y;
 
+
         if (width <= 0 || height <= 0)
         {
             return new RectInt();
