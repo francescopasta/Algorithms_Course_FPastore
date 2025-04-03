@@ -9,11 +9,11 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 public class DungeonGeneratorNew : MonoBehaviour
 {
-    private RectInt roomFirst = new RectInt(0,0,100,50);
+    private RectInt roomFirst = new RectInt(0, 0, 100, 50);
     private List<RectInt> rooms;
-    private List<RectInt> roomsUsed = new List<RectInt>();
+    private List<RectInt> roomsUsed = new();
     //List<RectInt> theDoors = new List<RectInt>();
-    private List<RectInt> walls = new List<RectInt>();
+    private List<RectInt> walls = new();
 
     public float animationTimeRooms;
     public float animationTimeDoors;
@@ -30,7 +30,7 @@ public class DungeonGeneratorNew : MonoBehaviour
     {
         yield return new WaitForSeconds(animationTimeRooms);
         //int boolean = ;
-        if(Random.Range(2,0) % 2 == 0)
+        if (Random.Range(2, 0) % 2 == 0)
         {
             rooms = new List<RectInt>(CutterHeight(roomFirst));
         } else
@@ -41,68 +41,92 @@ public class DungeonGeneratorNew : MonoBehaviour
         for (int i = 0; i < rooms.Count; i++)
         {
             //if (rooms[i].width < limit * 2 && rooms[i].height < limit * 2) continue;
-            if(rooms[i].width >= rooms[i].height && rooms[i].width > limit * 2)
+            if (rooms[i].width >= rooms[i].height && rooms[i].width > limit * 2)
             {
                 yield return new WaitForSeconds(animationTimeRooms);
-                List<RectInt> list = new List<RectInt>(CutterWidth(rooms[i]));
+                List<RectInt> list = new(CutterWidth(rooms[i]));
                 foreach (var room in list)
                 {
                     rooms.Add(room);
+                    roomsUsed.Add(room);
                 }
-                //roomsUsed.Add(rooms[i]);
+                roomsUsed.Remove(rooms[i]);
             }
             else
             {
                 if (rooms[i].height < limit * 2) continue;
                 yield return new WaitForSeconds(animationTimeRooms);
-                List<RectInt> list = new List<RectInt>(CutterHeight(rooms[i]));
+                List<RectInt> list = new(CutterHeight(rooms[i]));
                 foreach (var room in list)
                 {
                     rooms.Add(room);
+                    roomsUsed.Add(room);
                 }
-                //roomsUsed.Add(rooms[i]);
+                roomsUsed.Remove(rooms[i]);
             }
         }
+
+        Debug.Log("rooms: " + rooms.Count);
+        Debug.Log("roomsUsed: " + roomsUsed.Count);
 
         //StartCoroutine(AddDoors());
         AddWalls();
     }
 
     void AddWalls()
-    {
-        for (int i = 0; i < rooms.Count; i++)
+    { 
+        for (int i = 0; i < roomsUsed.Count; i++)
         {
-            for (int j = i + 1; j < rooms.Count; j++)
+            for (int j = i + 1; j < roomsUsed.Count; j++)
             {
-                if (AlgorithmsUtils.Intersects(rooms[i], rooms[j]))    
-                {
-                    RectInt wall = AlgorithmsUtils.Intersect(rooms[i], rooms[j]);
-                    if (wall.width == 1 || wall.height == 1)
-                    {
-                        //AlgorithmsUtils.DebugRectInt(wall, Color.red, float.MaxValue);
-                        walls.Add(wall);
-                    }
-                }
+                if (!AlgorithmsUtils.Intersects(roomsUsed[i], roomsUsed[j])) continue;
+                RectInt wall = AlgorithmsUtils.Intersect(roomsUsed[i], roomsUsed[j]);
+                walls.Add(wall);
+                //if(j % 2 == 0)
+                //{
+                //    AlgorithmsUtils.DebugRectInt(wall, Color.green, float.MaxValue);
+                //} else
+                //{
+                //    AlgorithmsUtils.DebugRectInt(wall, Color.red, float.MaxValue);
+                //}
+
+                //if (wall.width == 1 || wall.height == 1 && walls.Contains(wall) == false)
+                //{
+
+                //    //j = rooms.Count;
+                //}
+
+                //if (AlgorithmsUtils.Intersects(roomsUsed[i], roomsUsed[j]))    
+                //{
+                //}
+                //yield return new WaitForSeconds(animationTimeDoors);
             }
         }
+
+        Debug.Log("Walls: " + walls.Count);
 
         StartCoroutine(AddDoors());
     }
 
     IEnumerator AddDoors()
     {
+        Debug.Log("Add doors reached");
         foreach (var wall in walls)
         {
+            //AlgorithmsUtils.DebugRectInt(wall, Color.green, float.MaxValue);
+            //yield return new WaitForSeconds(animationTimeDoors);
+            if (wall.width <= 4 && wall.height <= 4) continue;
+
             if(wall.width < wall.height)
             {
-                yield return new WaitForSeconds(animationTimeDoors);
-                RectInt door = new RectInt(wall.x, Random.Range(wall.y, wall.y + wall.height), 1, 1);
+                RectInt door = new(wall.x, Random.Range(wall.y + 1, wall.y + wall.height - 1), 1, 1);
                 AlgorithmsUtils.DebugRectInt(door, Color.red, float.MaxValue);
+                yield return new WaitForSeconds(animationTimeDoors);
             } else
             {
-                yield return new WaitForSeconds(animationTimeDoors);
-                RectInt door = new RectInt(Random.Range(wall.x, wall.x + wall.width), wall.y, 1, 1);
+                RectInt door = new(Random.Range(wall.x + 1, wall.x + wall.width - 1), wall.y, 1, 1);
                 AlgorithmsUtils.DebugRectInt(door, Color.red, float.MaxValue);
+                yield return new WaitForSeconds(animationTimeDoors);
             }
         }
     }

@@ -605,9 +605,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b33f4dede4bfd10478b99bfdedf1c7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationTimeRooms: 0.05
-  animationTimeDoors: 0.8
-  limit: 6
+  animationTimeRooms: 0.1
+  animationTimeDoors: 0.1
+  limit: 8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
