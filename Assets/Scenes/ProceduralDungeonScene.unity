@@ -571,6 +571,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2084153753}
   - component: {fileID: 2084153754}
+  - component: {fileID: 2084153755}
   m_Layer: 0
   m_Name: DungeonGenerator4
   m_TagString: Untagged
@@ -608,6 +609,22 @@ MonoBehaviour:
   animationTimeRooms: 0.1
   animationTimeDoors: 0.1
   limit: 8
+  wallAssetsGenerator: {fileID: 0}
+--- !u!114 &2084153755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084153752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd881959affdf1498393b4fc443c343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallPrefabPlain: {fileID: 919132149155446097, guid: 24aa0d1a50aace64ba97d324bec1428e, type: 3}
+  wallPrefabCorner: {fileID: 919132149155446097, guid: 005939519fd1532438721568e8f8b5ca, type: 3}
+  wallPrefabWallEnd: {fileID: 919132149155446097, guid: e77ac8a4fd4c5de4da937010a212feb4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

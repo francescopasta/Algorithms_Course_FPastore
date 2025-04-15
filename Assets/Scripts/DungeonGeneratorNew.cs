@@ -14,12 +14,20 @@ public class DungeonGeneratorNew : MonoBehaviour
     private List<RectInt> rooms;
     private readonly List<RectInt> roomsUsed = new();
     private readonly List<RectInt> walls = new();
+    private List<RectInt> doors = new();
 
     public float animationTimeRooms;
     public float animationTimeDoors;
     public int limit = 10;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public WallsTileMap wallAssetsGenerator;
+
+    //Awake is called when the scene start
+    private void Awake()
+    {
+        wallAssetsGenerator = GetComponent<WallsTileMap>();
+    }
+
     void Start()
     {
         AlgorithmsUtils.DebugRectInt(roomFirst, Color.blue, float.MaxValue);
@@ -93,15 +101,19 @@ public class DungeonGeneratorNew : MonoBehaviour
             if(wall.width < wall.height)
             {
                 RectInt door = new(wall.x, Random.Range(wall.y + 1, wall.y + wall.height - 1), 1, 1);
+                doors.Add(door);
                 AlgorithmsUtils.DebugRectInt(door, Color.red, float.MaxValue);
                 yield return new WaitForSeconds(animationTimeDoors);
             } else
             {
                 RectInt door = new(Random.Range(wall.x + 1, wall.x + wall.width - 1), wall.y, 1, 1);
+                doors.Add(door);
                 AlgorithmsUtils.DebugRectInt(door, Color.red, float.MaxValue);
                 yield return new WaitForSeconds(animationTimeDoors);
             }
         }
+
+        //StartCoroutine(wallAssetsGenerator.PlaceAssets());
     }
 
     List<RectInt> CutterWidth(RectInt roomCut)
@@ -138,5 +150,20 @@ public class DungeonGeneratorNew : MonoBehaviour
         //Add the two in a List in order to make them cuttable next
         List<RectInt> list = new() { roomA, roomB };
         return list;
+    }
+
+    public List<RectInt> GetWalls()
+    {
+        return walls;
+    }
+
+    public List<RectInt> GetDoors()
+    {
+        return doors;
+    }
+
+    public RectInt GetDungeonBounds() 
+    {
+        return roomFirst;
     }
 }

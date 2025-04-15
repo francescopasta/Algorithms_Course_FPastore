@@ -18,7 +18,6 @@ public class AlgorithmsUtils
         int width = Mathf.Min(a.xMax, b.xMax) - x;
         int height = Mathf.Min(a.yMax, b.yMax) - y;
 
-
         if (width <= 0 || height <= 0)
         {
             return new RectInt();
@@ -29,22 +28,22 @@ public class AlgorithmsUtils
         }
     }
     
-    public static void FillRectangle(char[,] array, RectInt area, char value)
+    public static void FillRectangle(int[,] array, RectInt area, int value)
     {
-        for (int i = area.y; i < area.y + area.height; i++)
+        for (int i = area.y; i < area.y + area.height; i++) //Height is row
         {
-            for (int j = area.x; j < area.x + area.width; j++)
+            for (int j = area.x; j < area.x + area.width; j++) //Width is column
             {
                 array[i, j] = value;
             }
         }
     }
     
-    public static void FillRectangleOutline(char[,] array, RectInt area, char value) 
+    public static void FillRectangleOutline(int[,] array, RectInt area, int value) 
     { 
         
-        int endX = area.x + area.width - 1;
-        int endY = area.y + area.height - 1;
+        int endX = area.x + area.width - 1; //X is column
+        int endY = area.y + area.height - 1; //Y is row
 
         // Draw top and bottom borders
         for (int x = area.x; x <= endX; x++)

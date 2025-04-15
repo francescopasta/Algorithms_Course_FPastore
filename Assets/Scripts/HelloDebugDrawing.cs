@@ -22,7 +22,6 @@ public class HelloDebugDrawing : MonoBehaviour
             AlgorithmsUtils.DebugRectInt(b, Color.green);
             AlgorithmsUtils.DebugRectInt(c, Color.yellow);
         });
-
     }
 
 }
